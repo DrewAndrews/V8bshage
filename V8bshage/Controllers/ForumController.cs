@@ -8,17 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace V8bshage.Controllers
 {
-    public class NewsController : Controller
+    public class ForumController : Controller
     {
-        //GET: /News/
+        // GET: /Forum/
         public IActionResult Index()
         {
             return View();
-        }
-
-        public string Welcome()
-        {
-            return "Welcome page!";
         }
     }
 }
