@@ -1,6 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Магазин";
-}
+﻿@model IEnumerable<V8bshage.Models.Advertisement>
 
-<h2>Магазин</h2>
-<p>Здесь будет магазин</p>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h1>Объявления</h1>
+        </div>
+        <div class="col-6 text-right">
+            <a class="btn btn-primary" asp-controller="Shop" asp-action="Create">Добавить объявление</a>
+        </div>
+    </div>
+    <div class="col">
+        @if (Model.Count<Advertisement>() > 0)
+        {
+            @foreach (var adv in Model)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" style="object-fit:contain; width:200px; height:300px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(adv.Photo))" />
+                    <div class="card-body">
+                        <h5 class="card-title">@adv.Title</h5>
+                        <p class="card-text">@adv.Description</p>
+                        <a href="#" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Ещё нет никаких объявлений</p>
+        }
+    </div>
+</div>
