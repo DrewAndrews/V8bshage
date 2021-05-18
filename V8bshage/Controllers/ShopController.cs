@@ -63,6 +63,23 @@ namespace V8bshage.Controllers
                         await file.CopyToAsync(dataStream);
                         new_adv.Photo = dataStream.ToArray();
                     }
+                } else
+                {
+                    string storePath = "wwwroot/img/";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), storePath, "default_adv.png");
+
+                    using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        // Create a byte array of file stream length
+                        byte[] bytes = System.IO.File.ReadAllBytes(path);
+                        //Read block of bytes from stream into the byte array
+                        fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
+                        //Close the File Stream
+                        fs.Close();
+
+                        new_adv.Photo = bytes;
+                    }
+
                 }
 
                 _adb.Advertisements.Add(new_adv);
