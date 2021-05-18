@@ -28,6 +28,8 @@ namespace V8bshage.Controllers
             _adb = adb;
         }
 
+        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
@@ -44,11 +46,44 @@ namespace V8bshage.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangeProfile()
+        public async Task<IActionResult> ChangeProfile(string id)
         {
-            var user = await _userManager.GetUserAsync(User);
-            user.LastName = "Foo";
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
             return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeProfilePost(User user)
+        {
+            var updated_user = await _userManager.FindByIdAsync(user.Id);
+            if(updated_user == null)
+            {
+                return NotFound();
+            }
+
+            updated_user.Name = user.Name;
+            updated_user.LastName = user.LastName;
+            updated_user.UserName = user.UserName;
+            updated_user.Vk = user.Vk;
+            updated_user.Telegram = $"https://t.me/{user.Telegram}";
+
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile file = Request.Form.Files.FirstOrDefault();
+                using (var dataStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(dataStream);
+                    updated_user.Photo = dataStream.ToArray();
+                }
+            }
+
+            await _userManager.UpdateAsync(updated_user);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -77,13 +112,15 @@ namespace V8bshage.Controllers
             return View(adv);
         }
 
-        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
         [HttpPost]
         public async Task<IActionResult> UpdateAdv(Advertisement adv)
         {
+            User user = await GetCurrentUserAsync();
+            adv.UserId = user.Id;
+
             if(ModelState.IsValid)
             {
+
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();

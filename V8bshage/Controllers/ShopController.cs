@@ -73,5 +73,20 @@ namespace V8bshage.Controllers
 
             return View(adv);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Info(int id)
+        {
+            var adv = _adb.Advertisements.Find(id);
+            var user = await GetCurrentUserAsync();
+
+            AdvInfoViewModel model = new AdvInfoViewModel
+            {
+                Adv = adv,
+                User = user
+            };
+
+            return View(model);
+        }
     }
 }

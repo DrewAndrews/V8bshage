@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@adv.Title</h5>
                         <p class="card-text">@adv.Description</p>
-                        <a href="#" class="btn btn-primary">Подробнее</a>
+                        <a asp-controller="Shop" asp-action="Info" asp-route-id="@adv.AdvId" class="btn btn-primary">Подробнее</a>
                     </div>
                 </div>
             }

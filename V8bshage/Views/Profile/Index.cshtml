@@ -1,4 +1,5 @@
-﻿@model V8bshage.Models.ProfileViewModel 
+﻿@model V8bshage.Models.ProfileViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<User> userManager
 
 <link href="css/profile.css" rel="stylesheet" />
 <div class="container">
@@ -12,12 +13,10 @@
                             <h4 class="card-title">Профиль</h4>
                         </div>
                         <div class="card-body user-profile-card mb-3">
-                            <a class="btn btn-circle" asp-controller="Profile" asp-action="ChangePhoto">
-                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.User.Photo))" class="user-profile-image rounded-circle" />
-                            </a>
+                            <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.User.Photo))" class="user-profile-image rounded-circle" />
                             <h4 class="text-center h6 mt-2">@Model.User.Name</h4>
                             <h4 class="text-center h6 mt-2">@Model.User.LastName</h4>
-                            <a class="btn btn-primary" asp-controller="Profile" asp-action="ChangeProfile">Изменить профиль</a>
+                            <a class="btn btn-primary" asp-controller="Profile" asp-action="ChangeProfile" asp-route-id="@userManager.GetUserId(User)">Изменить профиль</a>
                             <a class="btn btn-danger" asp-controller="Profile" asp-action="Logout">Выход</a>
                         </div>
                         <hr />
@@ -36,10 +35,10 @@
                 </div>
                 @if (Model.Advertisments.Count<Advertisement>() > 0)
                 {
-                    <div class="col-lg-7 col-xl-3">
+                    <div class="col-lg-7 col-xl-6">
                     @foreach (var advertisement in Model.Advertisments.Where(adv => adv.UserId == Model.User.Id))
                     {
-                        <div class="card" style="width: 18rem;">
+                        <div class="card text-center" style="width: 18rem;">
                             <img class="card-img-top" style="object-fit:contain; width:200px; height:300px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(advertisement.Photo))" />
                             <div class="card-body">
                                 <h5 class="card-title">@advertisement.Title</h5>
@@ -49,6 +48,7 @@
                                     <a asp-controller="Profile" asp-action="RemoveAdv" asp-route-Id="@advertisement.AdvId" class="btn btn-danger mx-1">Удалить</a>
                                 </div>
                             </div>
+                            <div class="card-footer text-muted">@advertisement.Price</div>
                         </div>
                     }
                     </div>
@@ -59,16 +59,6 @@
                         <p>У вас ещё нет объявлений</p>
                     </div>
                 }
-                <div class="col-lg-12 col-xl-3">
-                    <div class="card card-white grid-margin">
-                        <div class="card-heading clearfix">
-                            <h4 class="card-title">Some Info</h4>
-                        </div>
-                        <div class="card-body">
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, rem aperiam, eaque ipsa quae ab illo inventore veritatis architecto.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
