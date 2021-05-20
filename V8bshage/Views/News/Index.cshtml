@@ -1,27 +1,21 @@
 @model IEnumerable<V8bshage.Models.News>
 
-@{
-    ViewData["Title"] = "Новости";
-}
-<h1>Новости</h1>
 
-<head>
-    <link href="css/news.css" rel="stylesheet">
-</head>
-<body>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        @foreach (var news in Model)
-        {
-            <div class="col">
-                <div class="card">
-                    <img style="object-fit:contain; width:200px; height:300px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(news.Photo))" />
-                    <div class="card-body">
-                        <h5 class="card-title">@news.Title</h5>
-                        <p class="card-text">@news.Summary</p>
-                        <a asp-controller="News" asp-action="Info" asp-route-id="@news.Id" class="btn btn-primary">Подробнее</a>
-                    </div>
+<link href="css/news.css" rel="stylesheet" />
+
+<section class="grid">
+    @foreach (var news in Model)
+    {
+        <article class="grid-item">
+            <div class="image">
+                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(news.Photo))" />
+            </div>
+            <div class="info">
+                <h2>@news.Title</h2>
+                <div class="button-wrap">
+                    <a class="atuin-btn" asp-controller="News" asp-action="Info">Подробнее</a>
                 </div>
             </div>
-        }
-    </div>
-</body>
+        </article>
+    }
+</section>

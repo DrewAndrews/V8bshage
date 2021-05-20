@@ -80,6 +80,22 @@ namespace V8bshage.Controllers
                     await file.CopyToAsync(dataStream);
                     updated_user.Photo = dataStream.ToArray();
                 }
+            } else
+            {
+                string storePath = "wwwroot/img/";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), storePath, "user.png");
+
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    // Create a byte array of file stream length
+                    byte[] bytes = System.IO.File.ReadAllBytes(path);
+                    //Read block of bytes from stream into the byte array
+                    fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
+                    //Close the File Stream
+                    fs.Close();
+
+                    updated_user.Photo = bytes;
+                }
             }
 
             await _userManager.UpdateAsync(updated_user);

@@ -1,13 +1,15 @@
 ﻿@model V8bshage.Models.ProfileViewModel
 @inject Microsoft.AspNetCore.Identity.UserManager<User> userManager
 
+
 <link href="css/profile.css" rel="stylesheet" />
+<link href="css/cards.css" rel="stylesheet" />
 <div class="container">
     <div class="page-inner no-page-title">
         <!-- start page main wrapper -->
         <div id="main-wrapper">
             <div class="row">
-                <div class="col-lg-5 col-xl-3">
+                <div class="col-3">
                     <div class="card card-white grid-margin">
                         <div class="card-heading clearfix">
                             <h4 class="card-title">Профиль</h4>
@@ -35,11 +37,11 @@
                 </div>
                 @if (Model.Advertisments.Count<Advertisement>() > 0)
                 {
-                    <div class="col-lg-7 col-xl-6">
+                    <div class="col-9 flex-container">
                     @foreach (var advertisement in Model.Advertisments.Where(adv => adv.UserId == Model.User.Id))
                     {
                         <div class="card text-center" style="width: 18rem;">
-                            <img class="card-img-top" style="object-fit:contain; width:200px; height:300px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(advertisement.Photo))" />
+                            <img class="card-img-top" style="object-fit:contain; width:250px; height:250px" src="data:image/jpeg;base64,@(Convert.ToBase64String(advertisement.Photo))" />
                             <div class="card-body">
                                 <h5 class="card-title">@advertisement.Title</h5>
                                 <p class="card-text">@advertisement.Description</p>
@@ -55,7 +57,7 @@
                 }
                 else
                 {
-                    <div class="col-lg-7 col-xl-6">
+                    <div class="col-lg">
                         <p>У вас ещё нет объявлений</p>
                     </div>
                 }
